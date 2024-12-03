@@ -21,11 +21,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" >
       <body className={`${ddjbt.className}  antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
-        </ThemeProvider>
+          </ThemeProvider>
       </body>
     </html>
   )

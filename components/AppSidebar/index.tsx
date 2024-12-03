@@ -2,7 +2,8 @@ import { Sidebar, SidebarContent, SidebarGroup, SidebarMenu, SidebarGroupContent
 import MenuItem from '@/components/MenuItem'
 import SubMenuItem from '@/components/SubMenuItem'
 import AppSidebarHead from '@/components/AppSidebarHead'
-import AppSidebarFoot from '@/components/AppSidebarFoot'
+import dynamic from 'next/dynamic';
+const AppSidebarFoot = dynamic(() => import('@/components/AppSidebarFoot'), { ssr: false });
 import { sidebarHead,sidebarFoot } from '@/utils/settings'
 type AppSidebar = {
   items: SubMenuItemProps[]

@@ -4,11 +4,15 @@ export const menu:SubMenuItemProps[] = [
     title: "首页",
     icon: "solar--asteroid-bold-duotone",
   },
-
   {
     path: "/about",
     title: "关于我们",
     icon: "solar--danger-bold",
+  },
+  {
+    path: "/form",
+    title: "表单",
+    icon: "solar--asteroid-bold-duotone",
   },
   {
     path: "/order",

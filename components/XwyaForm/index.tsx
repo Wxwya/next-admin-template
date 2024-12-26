@@ -64,7 +64,6 @@ export const XwyaForm = () => {
                     <SelectItem value="female">m@google.com</SelectItem>
                     <SelectItem value="m@support.com">m@support.com</SelectItem>
                   </SelectContent>
-               
                 </Select>
               </div>
               <FormMessage />

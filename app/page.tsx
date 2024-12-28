@@ -1,10 +1,12 @@
 import Layout from '@/components/Layout'
-const Home = () => {
+import UploadFile from '@/components/UploadFile'
+const Home = (config) => {
   return (
     <>
       <Layout page="首页" pathKey="/">
-        <div>
-          6666
+        <div className='h-full flex justify-center items-center'>
+          <UploadFile />
+  
         </div>
       </Layout>
     </>

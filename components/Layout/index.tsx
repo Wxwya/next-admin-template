@@ -1,6 +1,5 @@
 'use client'
 import React, { useEffect } from 'react'
-import dynamic from 'next/dynamic'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import AppSidebar from '@/components/AppSidebar'
 import { menu } from './menu'
@@ -15,9 +14,7 @@ type LayoutProps = {
   page: string
   href?: string
 }
-const ThemeProviderNoSSR = dynamic(() => import('next-themes').then((mod) => mod.ThemeProvider), {
-  ssr: false,
-})
+
 const variants = {
   hidden: {
     opacity: 0,
@@ -51,18 +48,17 @@ const Layout = ({ children, pathKey, groupKey, link, page, href }: LayoutProps) 
     groupKey && onChangeMenuGroupKeys(groupKey, true)
   }, [])
   return (
-    <ThemeProviderNoSSR attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-    <SidebarProvider open={collapsed} onOpenChange={onChangeCollapsed}>
-      <AppSidebar {...config} />
-
-      <main className="flex-grow  flex flex-col">
-        <AppMainHead link={link} page={page} href={href} />
-        <BlurFade delay={0.25} variant={variants} className=" flex-grow  " inView>
-          <div className=" h-full">{children}</div>
-        </BlurFade>
-      </main>
+    // <ThemeProviderNoSSR attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <SidebarProvider open={collapsed} onOpenChange={onChangeCollapsed}>
+        <AppSidebar {...config} />
+        <main className="flex-grow  flex flex-col">
+          <AppMainHead link={link} page={page} href={href} />
+          <BlurFade delay={0.25} variant={variants} className=" flex-grow  " inView>
+            <div className=" h-full">{children}</div>
+          </BlurFade>
+        </main>
       </SidebarProvider>
-      </ThemeProviderNoSSR>
+    // </ThemeProviderNoSSR>
   )
 }
 

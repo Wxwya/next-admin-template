@@ -15,6 +15,11 @@ export const menu:SubMenuItemProps[] = [
     icon: "solar--asteroid-bold-duotone",
   },
   {
+    path: "/table",
+    title: "表格",
+    icon: "solar--asteroid-bold-duotone",
+  },
+  {
     path: "/order",
     title: "订单管理",
     icon: "solar--database-bold",

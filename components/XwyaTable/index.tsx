@@ -84,7 +84,6 @@ const XwyaTable = ({ data=[],columns=[],total=1,onChange,page,loading })=> {
     },
     pageCount: total,
   })
-
   const prev = async () => { 
     if (onChange) { 
       const pageNo = page.pageNo  -1
@@ -106,13 +105,9 @@ const XwyaTable = ({ data=[],columns=[],total=1,onChange,page,loading })=> {
         toast.error("請輸入正確的頁碼")
         return 
       }
-  
       onChange({ ...page, pageNo:Number(event.target.value)})&& table.setPageIndex(Number(event.target.value))
-      
-      // 执行其他逻辑，例如提交数据
     }
   };
-
   return (
     <div className="w-full">
       <div className="rounded-md border">

@@ -115,7 +115,6 @@ const pageData = [
 ];
 
 const Table = () => {
-  // const [data,setData] = useState([])
   const { page,setData,data,setPage,loading,setLoading,total,setTotal } = usePage()
   const returnData = (pageIndex) => { 
       return new Promise((resolve, reject) => {
@@ -149,24 +148,23 @@ const Table = () => {
       pageNo:page.pageNo + 1
     })
   }
+  const sousuo = () => { 
+    // getData()
+    setPage({...page,pageNo:1})
+  }
   const onChange = (page) => { 
-    console.log(page);
-    
     setPage(page)
     return true
   }
   useEffect(() => { 
     console.log("開始獲取數據",page);
-    
     getData()
   },[page])
   return (
     <Layout page="表格" pathKey='/table'>
-      <XwyaTable data={data} loading={loading} total={total} columns={columns} onChangePage={ setPage} page={page} onChange={onChange}  />
-      
+      <XwyaTable data={data} loading={loading} total={total} columns={columns}  page={page} onChange={onChange}  />
+      <div onClick={sousuo}>搜索</div>
       {/* <div onClick={addNum}>下一頁</div>  */}
-  
-
     </Layout>
   )
 }

@@ -50,7 +50,6 @@ const items = [
   { type: "upload", item: { label: "上傳圖片", name: "filelist" }, content: { multiple: true, accept: "image/*" } },
   { type: "date", item: { label: "日期", name: "date" }, content: { placeholder: "請選擇日期" } },
   { type: "range", item: { label: "日期", name: "range" }, content: {startPlaceholder: "開始日期",endPlaceholder:"結束日期"} }
-  
 ]
 // const items = [
 //   {

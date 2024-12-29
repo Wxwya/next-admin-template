@@ -20,14 +20,16 @@ type XwyaFormProps = {
   row?: number
   items: any
   onFinish: (values: any) => void
-  form: any
+  form: any,
+  layout: "horizontal" | "vertical",
+  children:ReactNode
 }
-const getTypeFormItem = (data: any, field: any, labelWidth: number = 80, labelAlign: string) => {
+const getTypeFormItem = (data: any, field: any, labelWidth: number = 80, labelAlign: string,layout:string,) => {
   switch (data.type) {
     case 'input':
       return (
         <>
-          <div className="flex gap-2 items-center">
+          <div className={cn(layout==="horizontal" && "flex","gap-2 items-center") }>
             <FormLabel style={{ width: labelWidth, textAlign: labelAlign }}>{data.item.label}</FormLabel>
             <FormControl>
               <Input className=" focus-visible:ring-0 focus-visible:ring-none" {...data.content} {...field} />
@@ -40,7 +42,7 @@ const getTypeFormItem = (data: any, field: any, labelWidth: number = 80, labelAl
     case 'textarea':
       return (
         <>
-          <div className="flex gap-2 ">
+          <div className={cn(layout==="horizontal" && "flex","gap-2 ") }>
             <FormLabel style={{ width: labelWidth, textAlign: labelAlign }}>{data.item.label}</FormLabel>
             <FormControl>
               <Textarea className="resize-none !outline-0" {...data.content} {...field} />
@@ -53,7 +55,7 @@ const getTypeFormItem = (data: any, field: any, labelWidth: number = 80, labelAl
     case 'select':
       return (
         <>
-          <div className="flex gap-2 items-center">
+          <div className={cn(layout==="horizontal" && "flex","gap-2 items-center") }>
             <FormLabel style={{ width: labelWidth, textAlign: labelAlign }}>{data.item.label}</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
@@ -77,7 +79,7 @@ const getTypeFormItem = (data: any, field: any, labelWidth: number = 80, labelAl
     case 'radio':
       return (
         <>
-          <div className="flex gap-2 ">
+          <div className={cn(layout==="horizontal" && "flex","gap-2 ") }>
             <FormLabel style={{ width: labelWidth, textAlign: labelAlign }}>{data.item.label}</FormLabel>
             <FormControl>
               <RadioGroup {...data.content} onValueChange={field.onChange} defaultValue={field.value}>
@@ -99,7 +101,7 @@ const getTypeFormItem = (data: any, field: any, labelWidth: number = 80, labelAl
     case 'checkbox':
       return (
         <>
-          <div className="flex gap-2 ">
+          <div className={cn(layout==="horizontal" && "flex","gap-2 ") }>
             <FormLabel style={{ width: labelWidth, textAlign: labelAlign }}>{data.item.label}</FormLabel>
             <FormControl>
               <div className=" flex gap-2 items-center flex-wrap">
@@ -129,7 +131,7 @@ const getTypeFormItem = (data: any, field: any, labelWidth: number = 80, labelAl
     case 'switch':
       return (
         <>
-          <div className="flex gap-2 items-center">
+          <div className={cn(layout==="horizontal" && "flex","gap-2 items-center") }>
             <FormLabel style={{ width: labelWidth, textAlign: labelAlign }}>{data.item.label}</FormLabel>
             <FormControl>
               <Switch checked={field.value} onCheckedChange={field.onChange} />
@@ -142,7 +144,7 @@ const getTypeFormItem = (data: any, field: any, labelWidth: number = 80, labelAl
     case 'upload':
       return (
         <>
-          <div className="flex gap-2">
+          <div className={cn(layout==="horizontal" && "flex","gap-2 ") }>
             <FormLabel style={{ width: labelWidth, textAlign: labelAlign }}>{data.item.label}</FormLabel>
             <FormControl>
               <UploadFile filelist={field.value} onChange={field.onChange} {...data.content} />
@@ -155,7 +157,7 @@ const getTypeFormItem = (data: any, field: any, labelWidth: number = 80, labelAl
     case 'date':
       return (
         <>
-          <div className="flex gap-2">
+          <div className={cn(layout==="horizontal" && "flex","gap-2 items-center") }>
             <FormLabel style={{ width: labelWidth, textAlign: labelAlign }}>{data.item.label}</FormLabel>
             <FormControl>
               <Popover>
@@ -181,7 +183,7 @@ const getTypeFormItem = (data: any, field: any, labelWidth: number = 80, labelAl
     case 'range':
       return (
         <>
-          <div className="flex gap-2">
+          <div className={cn(layout==="horizontal" && "flex","gap-2 items-center") }>
             <FormLabel style={{ width: labelWidth, textAlign: labelAlign }}>{data.item.label}</FormLabel>
             <FormControl>
               <Popover>
@@ -224,7 +226,7 @@ const getTypeFormItem = (data: any, field: any, labelWidth: number = 80, labelAl
  *  row 默認每行多少個
  *
  */
-const XwyaForm = ({ items = [], row = 1, labelAlign, labelWidth, onFinish, form }: XwyaFormProps) => {
+const XwyaForm = ({ items = [], row = 1,layout="horizontal", labelAlign, labelWidth, onFinish, form,children }: XwyaFormProps) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onFinish)} autoComplete="off">
@@ -234,13 +236,14 @@ const XwyaForm = ({ items = [], row = 1, labelAlign, labelWidth, onFinish, form 
               key={index}
               control={form.control}
               name={item.item.name}
-              render={({ field }) => <FormItem style={{ width: `${100 / row}%` }}>{getTypeFormItem(item, field, labelWidth, labelAlign)}</FormItem>}
+              render={({ field }) => <FormItem style={{ width: `${100 / row}%` }}>{getTypeFormItem(item, field, labelWidth, labelAlign,layout)}</FormItem>}
             />
           ))}
         </div>
-        <div className="mt-2">
+        {/* <div className="mt-2">
           <Button type="submit">Submit</Button>
-        </div>
+        </div> */}
+        { children}
       </form>
     </Form>
   )

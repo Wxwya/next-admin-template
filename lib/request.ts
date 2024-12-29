@@ -1,6 +1,5 @@
 import handleMsg from './handleMsg'
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL
-console.log(baseUrl)
 
 interface FetchOptions {
   url: string

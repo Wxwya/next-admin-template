@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import BlurIn from "@/components/ui/blur-in";
 import {
@@ -11,27 +12,54 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import XwyaForm from '@/components/XwyaForm';
+const formSchema = z.object({
+  username: z.string().min(2, {
+    message: 'Username must be at least 2 characters.',
+  }),
+  password: z.string().min(6, {
+    message:"密码不能小于6位"
+  })
+})
+const items = [
+  { type: "input", item: { label: "用戶名", name: "username" }, content: { placeholder: "請輸入用戶名" } },
+  { type: "input", item: { label: "密码", name: "password" }, content: { placeholder: "請輸入密码",type:"password" } },
+]
 const Login = () => {
+   const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: '',
+      password:""
+    },
+   })
+  console.log(form);
+  
+   const onFinish = (values:any) => { 
+    console.log(values);
+  }
   
   return (
     <div className=' relative p-10 h-screen'>
        <BlurIn word="Xwya 后台管理系统" className=' text-left !text-4xl' />
-      <div className=' absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 '>
+      <div className=' absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 '>
         <Card className="w-[350px] animate-dropAndZoomOnce">
           <CardHeader>
             <CardTitle>欢迎登录</CardTitle>
           </CardHeader>
           <CardContent>
-            <form autoComplete='off'>
-                <div className=''></div>
-            </form>
-          </CardContent>
-          <CardFooter>
-            <Button className=' w-full text-base'>
+            <XwyaForm items={items} form={form} layout="vertical" onFinish={onFinish}>
+              <div className='mt-4'>
+              <Button className=' w-full text-base' type="submit">
               <span className='iconify line-md--loading-loop'></span>
               <span>登录</span>
             </Button>
-          </CardFooter>
+              </div>
+            </XwyaForm>
+          </CardContent>
       </Card>
    
       </div>

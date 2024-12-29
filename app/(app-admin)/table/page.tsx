@@ -91,82 +91,57 @@ export const columns: ColumnDef<Payment>[] = [
     },
   },
 ]
+const pageData = [
+  { id: "2hamdo36", amount: 993, status: "pending", email: "sara23@outlook.com" },
+  { id: "60sxztpl", amount: 288, status: "failure", email: "ken52@outlook.com" },
+  { id: "yyeqhsel", amount: 604, status: "failure", email: "sara83@gmail.com" },
+  { id: "djq5u1zk", amount: 932, status: "failure", email: "alex26@gmail.com" },
+  { id: "3e4vvwko", amount: 292, status: "failure", email: "john25@outlook.com" },
+  { id: "eao2kxmx", amount: 778, status: "pending", email: "john25@yahoo.com" },
+  { id: "6uw75zgl", amount: 582, status: "failure", email: "mike32@gmail.com" },
+  { id: "2blvpk10", amount: 692, status: "pending", email: "ken99@hotmail.com" },
+  { id: "11yz66ys", amount: 446, status: "pending", email: "ken98@outlook.com" },
+  { id: "el6np7wx", amount: 696, status: "failure", email: "alex74@outlook.com" },
+  { id: "skt39nu0", amount: 905, status: "success", email: "john85@yahoo.com" },
+  { id: "os0xlrtk", amount: 738, status: "success", email: "tom88@hotmail.com" },
+  { id: "807c3zn6", amount: 765, status: "failure", email: "ken40@hotmail.com" },
+  { id: "xagzw43m", amount: 481, status: "pending", email: "john41@hotmail.com" },
+  { id: "czox1tp8", amount: 446, status: "failure", email: "lisa29@hotmail.com" },
+  { id: "o4ri274q", amount: 444, status: "failure", email: "jane82@yahoo.com" },
+  { id: "133nkfe6", amount: 952, status: "pending", email: "sara82@yahoo.com" },
+  { id: "df0bes0e", amount: 427, status: "success", email: "sara88@gmail.com" },
+  { id: "v9vdvknh", amount: 866, status: "pending", email: "sara38@hotmail.com" },
+  { id: "vk9stmwd", amount: 711, status: "success", email: "tom97@gmail.com" },
+];
+
 const Table = () => {
   // const [data,setData] = useState([])
   const { page,setData,data,setPage,loading,setLoading,total,setTotal } = usePage()
-  const returnData = () => { 
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve([
-          {
-            id: "m5gr84i9",
-            amount: 316,
-            status: "success",
-            email: "ken99@yahoo.com",
-          },
-          {
-            id: "3u1reuv4",
-            amount: 242,
-            status: "success",
-            email: "Abe45@gmail.com",
-          },
-          {
-            id: "derv1ws0",
-            amount: 837,
-            status: "processing",
-            email: "Monserrat44@gmail.com",
-          },
-          {
-            id: "5kma53ae",
-            amount: 874,
-            status: "success",
-            email: "Silas22@gmail.com",
-          },
-          {
-            id: "bhqecj4p",
-            amount: 721,
-            status: "failed",
-            email: "carmella@hotmail.com",
-          },
-          {
-            id: "m5g2r84i9",
-            amount: 316,
-            status: "success",
-            email: "ken99@yahoo.com",
-          },
-          {
-            id: "3u1re2uv4",
-            amount: 242,
-            status: "success",
-            email: "Abe45@gmail.com",
-          },
-          {
-            id: "derv1w2s0",
-            amount: 837,
-            status: "processing",
-            email: "Monserrat44@gmail.com",
-          },
-          {
-            id: "5kma532ae",
-            amount: 874,
-            status: "success",
-            email: "Silas22@gmail.com",
-          },
-          {
-            id: "bhqecj24p",
-            amount: 721,
-            status: "failed",
-            email: "carmella@hotmail.com",
-          },
-        ])
-      }, 1000)
-    })
+  const returnData = (pageIndex) => { 
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const pageSize = 10; // 每页的条数
+          const startIndex = (pageIndex - 1) * pageSize; // 起始索引
+          const endIndex = startIndex + pageSize; // 结束索引
+          const pagesData = pageData.slice(startIndex, endIndex); // 分割数据
+    
+          if (pagesData.length > 0) {
+            resolve(pagesData);
+          } else {
+            reject({
+              status: "error",
+              message: "No data found for the requested page.",
+            });
+          }
+        }, 1000); // 模拟500ms的延迟
+      });
   }
   const getData = async () => { 
-    const res = await returnData()
-    console.log(res,"res");
+    setLoading(true)
+    const res = await returnData(page.pageNo)
     setData([...res])
-    setTotal(Math.ceil(110/page.pageSize))
+    setTotal(Math.ceil(20 / page.pageSize))
+    setLoading(false)
   }
   const addNum = () => { 
     setPage({
@@ -181,13 +156,13 @@ const Table = () => {
     return true
   }
   useEffect(() => { 
-    console.log("開始獲取數據");
+    console.log("開始獲取數據",page);
     
     getData()
   },[page])
   return (
     <Layout page="表格" pathKey='/table'>
-      <XwyaTable data={data} total={total} columns={columns} page={page} onChange={onChange}  />
+      <XwyaTable data={data} loading={loading} total={total} columns={columns} onChangePage={ setPage} page={page} onChange={onChange}  />
       
       {/* <div onClick={addNum}>下一頁</div>  */}
   

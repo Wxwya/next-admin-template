@@ -28,46 +28,10 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import toast from "react-hot-toast"
 
-// const data: Payment[] = [
-//   {
-//     id: 'm5gr84i9',
-//     amount: 316,
-//     status: 'success',
-//     email: 'ken99@yahoo.com',
-//   },
-//   {
-//     id: '3u1reuv4',
-//     amount: 242,
-//     status: 'success',
-//     email: 'Abe45@gmail.com',
-//   },
-//   {
-//     id: 'derv1ws0',
-//     amount: 837,
-//     status: 'processing',
-//     email: 'Monserrat44@gmail.com',
-//   },
-//   {
-//     id: '5kma53ae',
-//     amount: 874,
-//     status: 'success',
-//     email: 'Silas22@gmail.com',
-//   },
-//   {
-//     id: 'bhqecj4p',
-//     amount: 721,
-//     status: 'failed',
-//     email: 'carmella@hotmail.com',
-//   },
-// ]
 
-export type Payment = {
-  id: string
-  amount: number
-  status: 'pending' | 'processing' | 'success' | 'failed'
-  email: string
-}
+
 /***
  * id：唯一标识符
  *
@@ -91,7 +55,7 @@ export type Payment = {
  */
 
 
-const XwyaTable = ({ data=[],columns=[],total=1,onChange,page })=> {
+const XwyaTable = ({ data=[],columns=[],total=1,onChange,page,loading })=> {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -102,11 +66,12 @@ const XwyaTable = ({ data=[],columns=[],total=1,onChange,page })=> {
     onSortingChange: setSorting, // 排序發生變化的回調
     onColumnFiltersChange: setColumnFilters, // 当列过滤器发生变化时的回调函数
     getCoreRowModel: getCoreRowModel(), // 获取表格的基本行数据
-    getPaginationRowModel: getPaginationRowModel(), //获取分页的行数据模型
+    // getPaginationRowModel: getPaginationRowModel(), //获取分页的行数据模型
     getSortedRowModel: getSortedRowModel(), // 获取排序的行数据模型
     getFilteredRowModel: getFilteredRowModel(), // 获取过滤后的行数据模型
     onColumnVisibilityChange: setColumnVisibility, // 当列的可见性发生变化时的回调函数
     onRowSelectionChange: setRowSelection, // 当行的选择状态发生变化时的回调函数
+    // onPaginationChange:onChangePage,
     state: {
       sorting,
       columnFilters,
@@ -126,15 +91,27 @@ const XwyaTable = ({ data=[],columns=[],total=1,onChange,page })=> {
       if (pageNo <1) return
       onChange({...page,pageNo: pageNo }) && table.previousPage()
     }
-    
   }
   const next = async () => { 
-    if (onChange) { 
+    if (onChange) {
       const pageNo = page.pageNo + 1
       if (pageNo > total) return
-      onChange({ ...page, pageNo: pageNo }) && table.nextPage()
+      onChange({ ...page, pageNo: pageNo }) 
     }
   }
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      console.log('User pressed Enter:', );
+      if (Number(event.target.value) <= 0 || Number(event.target.value) > total) { 
+        toast.error("請輸入正確的頁碼")
+        return 
+      }
+  
+      onChange({ ...page, pageNo:Number(event.target.value)})&& table.setPageIndex(Number(event.target.value))
+      
+      // 执行其他逻辑，例如提交数据
+    }
+  };
 
   return (
     <div className="w-full">
@@ -153,35 +130,42 @@ const XwyaTable = ({ data=[],columns=[],total=1,onChange,page })=> {
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody  >
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  {/* 暫無數據. */}
-                </TableCell>
+          <TableBody className=' relative'  >
+          
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                ))}
               </TableRow>
-            )}
+            ))}
+         
+            { !loading&&!table.getRowModel().rows.length&&<TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                    暫無數據.
+              </TableCell>
+            </TableRow>}
+              
+            { loading&&<TableRow><TableCell className=' absolute inset-0 flex justify-center bg-[rgba(255,255,255,0.6)] dark:bg-[rgba(0,0,0,.3)] items-center  z-20'>正在加载...</TableCell></TableRow>}
+
           </TableBody>
         </Table>
       </div>
-      <div className=" flex items-center justify-end   space-x-2 py-4">
-          <Button  size="sm" onClick={prev} disabled={!table.getCanPreviousPage()}>
-            上一頁
-          </Button>
-          <Button  size="sm" onClick={ next}  disabled={!table.getCanNextPage()} >
-            下一頁
-          </Button>
-          <div className="flex-1 text-sm text-muted-foreground">
+      <div className=" flex items-center  justify-end space-x-2 py-4">
+      <div className="text-sm text-muted-foreground ">
           共 {table.getPageCount()} 頁
         </div>
+          <Button variant="outline"  size="sm" onClick={prev} disabled={!table.getCanPreviousPage()}>
+            上一頁
+          </Button>
+          <Button variant="outline"   size="sm" onClick={ next}  disabled={!table.getCanNextPage()} >
+            下一頁
+          </Button>
+        <div className=' text-sm items-center text-muted-foreground flex gap-2'>
+          <span>跳至</span>
+          <Input className='w-10'  onKeyPress={handleKeyPress}  />
+          <span>頁</span>
+        </div> 
       </div>
     </div>
   )

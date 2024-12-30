@@ -4,6 +4,7 @@ import Layout from '@/components/Layout'
 import XwyaForm from '@/components/XwyaForm'
 import XwyaTable from '@/components/XwyaTable'
 import XwyaPopover from '@/components/XwyaPopover'
+import XwyaUserDialog from '@/components/XwyaUserDialog'
 import usePage from '@/hooks/usePage'
 import { Button } from '@/components/ui/button'
 import { z } from 'zod'
@@ -20,33 +21,15 @@ type Payment = {
 const schema = z.object({
   name: z.string().optional(),
   namess: z.string().optional(),
-  namesss: z.string().optional(),
-  names: z.string().optional(),
-  range: z.object({
-    to: z.date().optional(),
-    from: z.date().optional(),
-  }).optional()
 })
 const items = [
-  { type: 'input', item: { label: '貨物名稱', name: 'name' }, content: { placeholder: '請輸入貨物名稱' } },
-  { type: 'input', item: { label: '再交名稱', name: 'names' }, content: { placeholder: '請輸入再交名稱' } },
+  { type: 'input', item: { label: '用戶名', name: 'name' }, content: { placeholder: '請輸入用戶名' } },
   {
-    type: 'select', item: { label: '貨物種類', name: 'namess' }, content: {
-      placeholder: '請選擇貨物種類', options: [
+    type: 'select', item: { label: '所屬系統', name: 'namess' }, content: {
+      placeholder: '請選擇所屬系統', options: [
         { label: "前臺用戶", value: "1" },
         {label:"後臺用戶",value:"2"}
-      ]
-    }
-  },
-  {
-    type: 'select', item: { label: '承運車輛', name: 'namesss' }, content: {
-      placeholder: '請選擇承運車輛', options: [
-        { label: "前臺用戶", value: "1" },
-        {label:"後臺用戶",value:"2"}
-      ]
-    }
-  },
-  { type: "range", item: { label: "日期", name: "range" }, content: {startPlaceholder: "開始日期",endPlaceholder:"結束日期"} }
+  ] } },
 ]
 const pageData = [
   { id: '2hamdo36', amount: 993, status: 'pending', email: 'sara23@outlook.com' },
@@ -71,19 +54,13 @@ const pageData = [
   { id: 'vk9stmwd', amount: 711, status: 'success', email: 'tom97@gmail.com' },
 ]
 
-const Order = () => {
+const User = () => {
   const { page, setData, data, setPage, loading, setLoading, total, setTotal } = usePage()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: '',
-      namess: "",
-      namesss: "",
-      names: "",
-      range: {
-        from: "",
-        to: "",
-      }
+      namess:""
     },
   })
   const onFinish = (values: any) => {
@@ -133,71 +110,49 @@ const Order = () => {
     },
     {
       accessorKey: 'email',
-      header: '再交名稱',
+      header: '用戶名',
       cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
     {
       accessorKey: 'emails',
-      header: '貨物種類',
+      header: '賬號',
       cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
     {
       accessorKey: 'semails',
-      header: '貨物',
+      header: '所屬系統',
       cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
     {
-      accessorKey: 'semailss',
-      header: '承運車輛',
-      cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
+      id: 'actions',
+      header: '操作',
+      enableHiding: false,
+      cell: ({ row }) => {
+        const payment = row.original
+        return (
+          <div className="flex gap-2 cursor-pointer">
+             <XwyaUserDialog title='編輯用戶' id={payment.id}>
+              <span>修改</span>
+            </XwyaUserDialog>
+            <XwyaPopover onConfirm={onConfirm} content={{ side: "top" }} text='確認刪除該貨物種類嗎？'><span className=" text-red-600">刪除</span></XwyaPopover>
+          </div>
+        )
+      },
     },
-    {
-      accessorKey: 'semailssss',
-      header: '出庫通知單',
-      cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
-    },
-    {
-      accessorKey: 'semailsss',
-      header: '確認單號',
-      cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
-    },
-    {
-      accessorKey: 'semailsssss',
-      header: '貨物重量',
-      cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
-    },
-    {
-      accessorKey: 'semailssssss',
-      header: '貨物圖片',
-      cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
-    },
-    // {
-    //   id: 'actions',
-    //   header: '操作',
-    //   enableHiding: false,
-    //   cell: ({ row }) => {
-    //     const payment = row.original
-    //     return (
-    //       <div className="flex gap-2 cursor-pointer">
-    //          <XwyaUserDialog title='編輯用戶' id={payment.id}>
-    //           <span>修改</span>
-    //         </XwyaUserDialog>
-    //         <XwyaPopover onConfirm={onConfirm} content={{ side: "top" }} text='確認刪除該貨物種類嗎？'><span className=" text-red-600">刪除</span></XwyaPopover>
-    //       </div>
-    //     )
-    //   },
-    // },
   ]
   useEffect(() => {
     getData()
   }, [page])
   return (
-    <Layout page="訂單管理" pathKey="/order">
-      <XwyaForm items={items} row={4} form={form} onFinish={onFinish}>
+    <Layout page="用戶管理" pathKey="/user">
+      <XwyaForm items={items} row={5} form={form} onFinish={onFinish}>
         <div className=' flex gap-2'>
           <Button type="submit" size="sm">搜索</Button>
           <Button onClick={onFormReset} type="button" variant="destructive" size="sm">重置</Button>
-              <Button variant="outline" type='button'>導出</Button>
+          <XwyaUserDialog title='新增用戶'>
+              <Button variant="outline" type='button'>新增</Button>
+          </XwyaUserDialog>
+          
         </div>
       </XwyaForm>
       <XwyaTable className="mt-4" data={data} loading={loading} total={total} columns={columns} page={page} onChange={onChange} />
@@ -205,4 +160,4 @@ const Order = () => {
   )
 }
 
-export default Order
+export default User

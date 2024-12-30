@@ -21,12 +21,12 @@ const formSchema = z.object({
     message: 'Username must be at least 2 characters.',
   }),
   password: z.string().min(6, {
-    message:"密码不能小于6位"
+    message:"密碼不能小於6位"
   })
 })
 const items = [
   { type: "input", item: { label: "用戶名", name: "username" }, content: { placeholder: "請輸入用戶名" } },
-  { type: "input", item: { label: "密码", name: "password" }, content: { placeholder: "請輸入密码",type:"password" } },
+  { type: "input", item: { label: "密碼", name: "password" }, content: { placeholder: "請輸入密碼",type:"password" } },
 ]
 const Login = () => {
    const form = useForm<z.infer<typeof formSchema>>({
@@ -44,18 +44,18 @@ const Login = () => {
   
   return (
     <div className=' relative p-10 h-screen'>
-       <BlurIn word="Xwya 后台管理系统" className=' text-left !text-4xl' />
+       <BlurIn word="抄重量碼管理系統" className=' text-left !text-4xl' />
       <div className=' absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 '>
         <Card className="w-[350px] animate-dropAndZoomOnce">
           <CardHeader>
-            <CardTitle>欢迎登录</CardTitle>
+            <CardTitle>歡迎登錄</CardTitle>
           </CardHeader>
           <CardContent>
             <XwyaForm items={items} form={form} layout="vertical" onFinish={onFinish}>
-              <div className='mt-4'>
+              <div className='mt-4 w-full'>
               <Button className=' w-full text-base' type="submit">
               <span className='iconify line-md--loading-loop'></span>
-              <span>登录</span>
+              <span>登錄</span>
             </Button>
               </div>
             </XwyaForm>

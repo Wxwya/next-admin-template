@@ -1,5 +1,6 @@
 import Layout from '@/components/Layout'
 import UploadFile from '@/components/UploadFile'
+
 const Home = (config) => {
   return (
     <>

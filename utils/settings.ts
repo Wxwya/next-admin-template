@@ -3,4 +3,4 @@ export const sidebarHead = false;
 /** Set sidebar footer */
 export const sidebarFoot = true;
 /** Set sidebar avatar */
-export const avatar = true;
+export const avatar = false;

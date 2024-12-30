@@ -3,6 +3,7 @@ import { SidebarTrigger } from '@/components/ui/sidebar'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { avatar } from '@/utils/settings'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { useRouter } from 'next/navigation'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 type AppMainHeadProps = {
   link?: string
@@ -10,6 +11,7 @@ type AppMainHeadProps = {
   page: string
 }
 const AppMainHead = ({ link, href, page }: AppMainHeadProps) => {
+  const router = useRouter()
   return (
     <div className=" px-4 pr-8 h-14 flex items-center justify-between border-b border-sidebar-border">
       <div className="flex items-center gap-4">
@@ -44,9 +46,9 @@ const AppMainHead = ({ link, href, page }: AppMainHeadProps) => {
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent side='bottom'>
-            <DropdownMenuItem className=' !text-red-600'>
+            <DropdownMenuItem className=' !text-red-600' onClick={()=>router.push("/login")}  >
               <span className='iconify solar--square-share-line-broken'></span>
-              <span> 退出登录</span>
+                <span> 退出登录</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

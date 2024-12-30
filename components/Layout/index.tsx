@@ -54,7 +54,7 @@ const Layout = ({ children, pathKey, groupKey, link, page, href }: LayoutProps) 
         <main className="flex-grow  flex flex-col">
           <AppMainHead link={link} page={page} href={href} />
           <BlurFade delay={0.25} variant={variants} className=" flex-grow  " inView>
-            <div className=" h-full">{children}</div>
+            <div className=" h-full p-4">{children}</div>
           </BlurFade>
         </main>
       </SidebarProvider>

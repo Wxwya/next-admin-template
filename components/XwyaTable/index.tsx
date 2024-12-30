@@ -55,7 +55,7 @@ import toast from "react-hot-toast"
  */
 
 
-const XwyaTable = ({ data=[],columns=[],total=1,onChange,page,loading })=> {
+const XwyaTable = ({ data=[],columns=[],total=1,onChange,page,loading,className })=> {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -109,7 +109,7 @@ const XwyaTable = ({ data=[],columns=[],total=1,onChange,page,loading })=> {
     }
   };
   return (
-    <div className="w-full">
+    <div className={ className}>
       <div className="rounded-md border">
         <Table className='min-h-[60vh]'>
           <TableHeader>
@@ -117,7 +117,7 @@ const XwyaTable = ({ data=[],columns=[],total=1,onChange,page,loading })=> {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} >
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   )

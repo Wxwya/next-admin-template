@@ -13,6 +13,15 @@ const nextConfig: NextConfig = {
   images: {
     domains: ['192.168.1.227'], // 允许加载的图片源的主机名
   },
+  async redirects() {
+    return [
+      {
+        source: '/', // 原始 URL
+        destination: '/goodsType', // 目标 URL
+        permanent: true, // 永久重定向
+      },
+    ]
+  },
   reactStrictMode: false,
 };
 

@@ -1,0 +1,116 @@
+@function multiple-box-shadow($n) {
+  $value: random(3000) + px random(3000) + px #fff; // 使用直接拼接方式
+  @for $i from 2 through $n {
+    $value: #{$value}, random(3000) + px random(3000) + px #fff; // 同样调整为拼接方式
+  }
+  @return $value; // 直接返回拼接好的字符串
+}
+$shadows-small: multiple-box-shadow(700);
+$shadows-medium: multiple-box-shadow(200);
+$shadows-big: multiple-box-shadow(100);
+
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
+}
+@keyframes shake {
+  0% {
+    transform: rotate(0deg) scale(1.2);
+  }
+  25% {
+    transform: rotate(5deg) scale(1.2);
+  }
+  50% {
+    transform: rotate(-5deg) scale(1.2);
+  }
+  75% {
+    transform: rotate(5deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(0deg) scale(1.2);
+  }
+}
+.home_container {
+  position: relative;
+  height: 100vh;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  overflow: hidden;
+}
+.stars,
+.stars2,
+.stars3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.stars {
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  box-shadow: $shadows-small;
+  animation: animStar 50s linear infinite;
+}
+
+.stars2 {
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow: $shadows-medium;
+  animation: animStar 100s linear infinite;
+}
+
+.stars3 {
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  box-shadow: $shadows-big;
+  animation: animStar 150s linear infinite;
+}
+.transparent_box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  .user_container {
+    padding: 20px;
+    width: 350px;
+    background-color: rgba($color: #1d1d1f, $alpha: 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: rgba(80, 80, 80, 0.19) 0px 6px 15px 0px;
+    -webkit-box-shadow: rgba(80, 80, 80, 0.19) 0px 6px 15px 0px;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    @apply animate-dropAndZoomOnce;
+  }
+}
+.user_box {
+  position: relative;
+  padding-top: 68px;
+  .avatar_box {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: linear-gradient(to bottom right, rgba(63, 63, 66, 0.4) 3%, rgba(48, 48, 48, 0.4) 97%);
+  }
+  .avatar {
+    transition: all 1s ease-in-out;
+    cursor: pointer;
+    &:hover {
+      animation: shake 0.5s ease-in-out;
+      transform: scale(1.2);
+    }
+  }
+}

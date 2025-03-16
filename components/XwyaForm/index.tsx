@@ -243,7 +243,7 @@ const XwyaForm = ({ items = [], row = 1, layout = "horizontal", labelAlign, labe
               key={index}
               control={form.control}
               name={item.item.name}
-              render={({ field }) => <FormItem style={{ width: `${100 / row}%` }}>{getTypeFormItem(item, field, labelWidth, labelAlign,layout)}</FormItem>}
+              render={({ field }) => <FormItem style={{ width: `${100 / row}%` }} className={`${row!=1 && 'max-md:!w-full  max-lg:!w-[calc(50%-8px)] max-xl:!w-[calc(50%-8px)] max-2xl:!w-[calc(33%-8px)]'} ` }>{getTypeFormItem(item, field, labelWidth, labelAlign,layout)}</FormItem>}
             />
           ))}
           { children}

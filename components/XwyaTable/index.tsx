@@ -111,8 +111,8 @@ const XwyaTable = ({ data=[],columns=[],total=1,onChange,page,loading,className 
   return (
     
     <div   className={ className} >
-      <div className="rounded-md border ">
-        <Table className='min-h-[60vh]  w-full'>
+      <div className="rounded-md border flex-1">
+        <Table className=' h-full  w-full'>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) =>(
               <TableRow key={headerGroup.id}>
@@ -146,7 +146,7 @@ const XwyaTable = ({ data=[],columns=[],total=1,onChange,page,loading,className 
           </TableBody>
         </Table>
       </div>
-      <div className=" flex items-center  justify-end space-x-2 py-4">
+      <div className=" shrink-0 flex items-center  justify-end space-x-2 py-4">
       <div className="text-sm text-muted-foreground ">
           共 {table.getPageCount()} 頁
         </div>

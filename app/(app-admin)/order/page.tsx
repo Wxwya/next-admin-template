@@ -10,7 +10,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import Link from 'next/link'
-import {ColumnDef} from '@tanstack/react-table'
+import { ColumnDef } from '@tanstack/react-table'
 type Payment = {
   id: string
   amount: number
@@ -22,31 +22,39 @@ const schema = z.object({
   namess: z.string().optional(),
   namesss: z.string().optional(),
   names: z.string().optional(),
-  range: z.object({
-    to: z.date().optional(),
-    from: z.date().optional(),
-  }).optional()
+  range: z
+    .object({
+      to: z.date().optional(),
+      from: z.date().optional(),
+    })
+    .optional(),
 })
 const items = [
   { type: 'input', item: { label: '貨物名稱', name: 'name' }, content: { placeholder: '請輸入貨物名稱' } },
   { type: 'input', item: { label: '再交名稱', name: 'names' }, content: { placeholder: '請輸入再交名稱' } },
   {
-    type: 'select', item: { label: '貨物種類', name: 'namess' }, content: {
-      placeholder: '請選擇貨物種類', options: [
-        { label: "前臺用戶", value: "1" },
-        {label:"後臺用戶",value:"2"}
-      ]
-    }
+    type: 'select',
+    item: { label: '貨物種類', name: 'namess' },
+    content: {
+      placeholder: '請選擇貨物種類',
+      options: [
+        { label: '前臺用戶', value: '1' },
+        { label: '後臺用戶', value: '2' },
+      ],
+    },
   },
   {
-    type: 'select', item: { label: '承運車輛', name: 'namesss' }, content: {
-      placeholder: '請選擇承運車輛', options: [
-        { label: "前臺用戶", value: "1" },
-        {label:"後臺用戶",value:"2"}
-      ]
-    }
+    type: 'select',
+    item: { label: '承運車輛', name: 'namesss' },
+    content: {
+      placeholder: '請選擇承運車輛',
+      options: [
+        { label: '前臺用戶', value: '1' },
+        { label: '後臺用戶', value: '2' },
+      ],
+    },
   },
-  { type: "range", item: { label: "日期", name: "range" }, content: {startPlaceholder: "開始日期",endPlaceholder:"結束日期"} }
+  { type: 'range', item: { label: '日期', name: 'range' }, content: { startPlaceholder: '開始日期', endPlaceholder: '結束日期' } },
 ]
 const pageData = [
   { id: '2hamdo36', amount: 993, status: 'pending', email: 'sara23@outlook.com' },
@@ -77,13 +85,13 @@ const Order = () => {
     resolver: zodResolver(schema),
     defaultValues: {
       name: '',
-      namess: "",
-      namesss: "",
-      names: "",
+      namess: '',
+      namesss: '',
+      names: '',
       range: {
-        from: "",
-        to: "",
-      }
+        from: '',
+        to: '',
+      },
     },
   })
   const onFinish = (values: any) => {
@@ -119,64 +127,64 @@ const Order = () => {
     setPage(page)
     return true
   }
-  const onConfirm = () => { 
+  const onConfirm = () => {
     return true
   }
-  const onFormReset = () => { 
+  const onFormReset = () => {
     form.reset()
   }
   const columns: ColumnDef<Payment>[] = [
     {
       accessorKey: 'status',
       header: '序號',
-      className:"w-[80px]",
+      className: 'w-[80px]',
       cell: ({ row }) => <div className="capitalize">{row.getValue('status')}</div>,
     },
     {
       accessorKey: 'email',
       header: '再交名稱',
-      className:"w-[200px]",
+      className: 'w-[200px]',
       cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
     {
       accessorKey: 'emails',
       header: '貨物種類',
-      className:"w-[200px]",
+      className: 'w-[200px]',
       cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
     {
       accessorKey: 'semails',
-      className:"w-[200px]",
+      className: 'w-[200px]',
       header: '貨物',
       cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
     {
       accessorKey: 'semailss',
-      className:"w-[200px]",
+      className: 'w-[200px]',
       header: '承運車輛',
       cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
     {
       accessorKey: 'semailssss',
-      className:"w-[200px]",
+      className: 'w-[200px]',
       header: '出庫通知單',
       cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
     {
       accessorKey: 'semailsss',
-      className:"w-[200px]",
+      className: 'w-[200px]',
       header: '確認單號',
       cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
     {
       accessorKey: 'semailsssss',
-      className:"w-[200px]",
+      className: 'w-[200px]',
       header: '貨物重量',
       cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
     {
       accessorKey: 'semailssssss',
-      className:"w-[200px]",
+      className: 'w-[200px]',
       header: '貨物圖片',
       cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
     },
@@ -202,14 +210,22 @@ const Order = () => {
   }, [page])
   return (
     <Layout page="訂單管理" pathKey="/order">
-      <XwyaForm items={items} row={4} form={form} onFinish={onFinish}>
-        <div className=' flex gap-2'>
-          <Button type="submit" size="sm">搜索</Button>
-          <Button onClick={onFormReset} type="button" variant="destructive" size="sm">重置</Button>
-              <Button variant="outline" type='button'>導出</Button>
-        </div>
-      </XwyaForm>
-      <XwyaTable className="mt-4" data={data} loading={loading} total={total} columns={columns} page={page} onChange={onChange} />
+      <div className="h-full flex flex-col gap-4 ">
+        <XwyaForm items={items} row={5} form={form} onFinish={onFinish}>
+          <div className=" flex gap-2">
+            <Button type="submit" size="sm">
+              搜索
+            </Button>
+            <Button onClick={onFormReset} type="button" variant="destructive" size="sm">
+              重置
+            </Button>
+            <Button variant="outline" type="button">
+              導出
+            </Button>
+          </div>
+        </XwyaForm>
+        <XwyaTable className="flex-1 flex flex-col" data={data} loading={loading} total={total} columns={columns} page={page} onChange={onChange} />
+      </div>
     </Layout>
   )
 }

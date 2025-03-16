@@ -13,10 +13,10 @@ type AppMainHeadProps = {
 const AppMainHead = ({ link, href, page }: AppMainHeadProps) => {
   const router = useRouter()
   return (
-    <div className=" px-4 pr-8 h-14 flex items-center justify-between border-b border-sidebar-border">
-      <div className="flex items-center gap-4">
+    <div className=" sticky  left-0 top-0 z-50 px-4 pr-8 w-full  bg-[hsl(var(--background))] flex items-center justify-between border-b border-sidebar-border">
+      <div className="flex h-14  items-center gap-4">
         <SidebarTrigger />
-        <div className=" w-px h-4  bg-sidebar-border "></div>
+        <div className=" w-px h-4  bg-sidebar-border"></div>
         <Breadcrumb>
           <BreadcrumbList>
             {link && href ? (

@@ -51,9 +51,9 @@ const Layout = ({ children, pathKey, groupKey, link, page, href }: LayoutProps) 
     // <ThemeProviderNoSSR attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
     <SidebarProvider open={collapsed} onOpenChange={onChangeCollapsed}>
       <AppSidebar {...config} />
-      <SidebarInset className=' overflow-x-hidden'>
+      <SidebarInset className=' overflow-x-hidden h-screen'>
         <AppMainHead link={link} page={page} href={href} />
-        <BlurFade delay={0.25} variant={variants} className=" flex-grow  " inView>
+        <BlurFade delay={0.25} variant={variants} className=" flex-grow" inView>
           <div className=" h-full p-4">{children}</div>
         </BlurFade>
       </SidebarInset>

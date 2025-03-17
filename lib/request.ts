@@ -1,3 +1,4 @@
+import toast  from 'react-hot-toast';
 import handleMsg from './handleMsg'
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL
 
@@ -21,10 +22,10 @@ const queryString = (params: Record<string, any>): string => {
 const handleResponse = async (response: Response, show: boolean): Promise<any> => {
   const pageData = await response.json()
   if (response.ok) {
-    // handleMsg(pageData,show)
+    handleMsg(pageData,show)
     return pageData
   } else {
-    window.$msg.error(pageData.code + ':' + pageData.msg || pageData.code + ':' + '请求错误')
+    toast.error(pageData.code + ':' + pageData.msg || pageData.code + ':' + '请求错误')
     throw new Error(pageData.code + ':' + (pageData.msg || '请求错误'))
   }
 }
@@ -35,7 +36,7 @@ const fetchData = async ({ url, method = 'GET', data = {}, headers = {} }: Fetch
       method: method.toUpperCase(),
       credentials: 'include', // 如果需要携带cookie，可以设置这个选项
       headers: {
-        Authorization: localStorage.getItem('token'),
+        Authorization: localStorage.getItem('token')|| '',
         'Content-Type': 'application/json;charset=UTF-8',
         ...headers,
       },
@@ -60,14 +61,14 @@ const fetchData = async ({ url, method = 'GET', data = {}, headers = {} }: Fetch
   }
 }
 
-export const uploadFile = async (url, file) => {
+export const uploadFile = async (url: string, file:File) => {
   // http://localhost:8088
   try {
     let options: RequestInit = {
       method: 'post',
       credentials: 'include', // 如果需要携带cookie，可以设置这个选项
       headers: {
-        Authorization: localStorage.getItem('token'),
+        Authorization: localStorage.getItem('token')||"",
       },
     }
     const formData = new FormData()
@@ -77,7 +78,7 @@ export const uploadFile = async (url, file) => {
     const response = await fetch(baseUrl + url, options)
     return await handleResponse(response, true)
   } catch (err: any) {
-    // window.$msg.error(err.message || '发送请求错误')
+    toast.error(err.message || '发送请求错误')
     return new Error(err.message || '发送请求错误')
   }
 }

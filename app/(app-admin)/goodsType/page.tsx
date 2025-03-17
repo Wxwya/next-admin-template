@@ -1,17 +1,9 @@
 'use client'
-import React, { useEffect } from 'react'
-import Layout from '@/components/Layout'
-import XwyaForm from '@/components/XwyaForm'
-import XwyaTable from '@/components/XwyaTable'
-import XwyaPopover from '@/components/XwyaPopover'
+import React from 'react'
 import XwyaGoodsTypeDialog from '@/components/XwyaGoodsTypeDialog'
-import usePage from '@/hooks/usePage'
-import { Button } from '@/components/ui/button'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
 import Link from 'next/link'
-import {ColumnDef} from '@tanstack/react-table'
+import { Button,XwyaPopover  } from "@/rely/admin_ui"
+import {ColumnDef,useForm,zodResolver,z,usePage,PageType,XwyaTable, XwyaForm,FormItemsProps,Layout,useEffect} from "@/rely/admin_global"
 type Payment = {
   id: string
   amount: number
@@ -21,7 +13,7 @@ type Payment = {
 const schema = z.object({
   name: z.string().optional(),
 })
-const items = [{ type: 'input', item: { label: '貨物種類', name: 'name' }, content: { placeholder: '請輸入貨物種類' } }]
+const items:FormItemsProps[] = [{ type: 'input', item: { label: '貨物種類', name: 'name' }, content: { placeholder: '請輸入貨物種類' } }]
 const pageData = [
   { id: '2hamdo36', amount: 993, status: 'pending', email: 'sara23@outlook.com' },
   { id: '60sxztpl', amount: 288, status: 'failure', email: 'ken52@outlook.com' },
@@ -47,7 +39,7 @@ const pageData = [
 
 const GoodsType = () => {
   const { page, setData, data, setPage, loading, setLoading, total, setTotal } = usePage()
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: '',
@@ -56,7 +48,7 @@ const GoodsType = () => {
   const onFinish = (values: any) => {
     console.log(values)
   }
-  const returnData = (pageIndex) => {
+  const returnData = (pageIndex:number): Promise<any[]> => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         const pageSize = 10 // 每页的条数
@@ -82,7 +74,7 @@ const GoodsType = () => {
     setTotal(Math.ceil(20 / page.pageSize))
     setLoading(false)
   }
-  const onChange = (page) => {
+  const onChange = (page:PageType) => {
     setPage(page)
     return true
   }

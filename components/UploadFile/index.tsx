@@ -1,25 +1,30 @@
 'use client'
 import Image from 'next/image'
-import Lightbox from 'react-image-lightbox';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState,InputHTMLAttributes } from 'react'
 import { uploadFile } from '@/lib/request'
 import toast  from 'react-hot-toast';
 import ViewImage from '@/components/VIewImage';
-const UploadFile = (config) => {
-  const uploadRef = useRef(null)
+type UploadFileProps = InputHTMLAttributes<HTMLInputElement> & {
+  onChange: (filelist: string[]) => void
+  filelist?: string[]
+  maxCount?: number
+}
+const UploadFile = (config:UploadFileProps) => {
+  const uploadRef = useRef<HTMLInputElement | null>(null)
   const [isOpen, setIsOpen] = useState(false)
   const { onChange, filelist=[],maxCount=1, ...restConfig } = config
   const [imgIndex,setImgIndex] = useState(0)
   const onUpload = () => {
-    uploadRef.current.click()
+    uploadRef.current!.click()
   }
   const handleFileChange = async () => {
-    const files = uploadRef.current.files;
-    if (files.length + filelist.length  > maxCount) { 
+    const files:FileList | null = uploadRef.current!.files;
+    if (files && files.length + filelist.length  > maxCount) { 
       toast.error(`最多只能上傳${maxCount}張圖片`) 
       return
     }  
     let urls = []
+    if(!files) return
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const res = await uploadFile("/api/file/upload", file)
@@ -29,7 +34,7 @@ const UploadFile = (config) => {
     }
     onChange([...filelist, ...urls])
     const dataTransfer = new DataTransfer()
-    uploadRef.current.files = dataTransfer.files; 
+    uploadRef.current!.files = dataTransfer.files; 
   }
   const onDeleteImage = (index:number) => {
     onChange(filelist.filter((item, i) => i !== index))

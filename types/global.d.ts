@@ -1,4 +1,4 @@
-type Option = {
-  label: string,
-  value: string
-} 
+type Option<T = string> = {
+  label: string;
+  value: T;
+};

@@ -2,9 +2,8 @@ import React from 'react'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 import { avatar } from '@/utils/settings'
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { useRouter } from 'next/navigation'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,Avatar, AvatarImage, AvatarFallback } from "@/rely/admin_ui"
 type AppMainHeadProps = {
   link?: string
   href?: string

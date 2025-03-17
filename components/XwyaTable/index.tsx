@@ -1,36 +1,10 @@
 'use client'
-import * as React from 'react'
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-
-} from '@tanstack/react-table'
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react'
-
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
+import  React from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import toast from "react-hot-toast"
-
-
+import toast from 'react-hot-toast'
+import { PageType, useState } from "@/rely/admin_global"
+import {ColumnDef,ColumnFiltersState,SortingState,VisibilityState,flexRender,getCoreRowModel,getFilteredRowModel,getPaginationRowModel,getSortedRowModel,useReactTable,} from '@tanstack/react-table'
+import { Input,Checkbox,Button,DropdownMenu,DropdownMenuCheckboxItem,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger} from "@/rely/admin_ui"
 
 /***
  * id：唯一标识符
@@ -53,14 +27,25 @@ import toast from "react-hot-toast"
  * row.getValue(key) : 获取行中指定键的值。
  *  <ArrowUpDown /> 排序組件
  */
+export type CustomColumnDef<T> = ColumnDef<T> & {
+  className?: string
+}
+type XwyaTableProps<T> = {
+  data: any[]
+  columns: CustomColumnDef<T>[]
+  total?: number
+  onChange?: (page: PageType) => void
+  page: PageType
+  loading?: boolean
+  className?: string
+}
 
-
-const XwyaTable = ({ data=[],columns=[],total=1,onChange,page,loading,className })=> {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
-  const table =useReactTable({
+const XwyaTable = <T,>({ data = [], columns = [], total = 1, onChange, page, loading, className }: XwyaTableProps<T>) => {
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = useState({})
+  const table = useReactTable({
     data,
     columns,
     onSortingChange: setSorting, // 排序發生變化的回調
@@ -78,47 +63,50 @@ const XwyaTable = ({ data=[],columns=[],total=1,onChange,page,loading,className 
       columnVisibility,
       rowSelection,
       pagination: {
-        pageIndex: page.pageNo - 1,
-        pageSize: page.pageSize,
-      }
+        pageIndex: page!.pageNo - 1,
+        pageSize: page!.pageSize,
+      },
     },
     pageCount: total,
   })
-  const prev = async () => { 
-    if (onChange) { 
-      const pageNo = page.pageNo  -1
-      if (pageNo <1) return
-      onChange({...page,pageNo: pageNo }) && table.previousPage()
+  const prev = async () => {
+    if (onChange) {
+      const pageNo = page!.pageNo - 1
+      if (pageNo < 1) return
+      onChange && onChange({ ...page, pageNo: pageNo })
+      table.previousPage()
     }
   }
-  const next = async () => { 
+  const next = async () => {
     if (onChange) {
       const pageNo = page.pageNo + 1
       if (pageNo > total) return
-      onChange({ ...page, pageNo: pageNo }) 
+      onChange && onChange({ ...page, pageNo: pageNo })
     }
   }
-  const handleKeyPress = (event) => {
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      console.log('User pressed Enter:', );
-      if (Number(event.target.value) <= 0 || Number(event.target.value) > total) { 
-        toast.error("請輸入正確的頁碼")
-        return 
+      console.log('User pressed Enter:')
+      // 检查输入值是否有效
+      const pageNumber = Number((event.target as HTMLInputElement).value)
+      if (pageNumber <= 0 || pageNumber > total) {
+        toast.error('請輸入正確的頁碼')
+        return
       }
-      onChange({ ...page, pageNo:Number(event.target.value)})&& table.setPageIndex(Number(event.target.value))
+      onChange && onChange({ ...page, pageNo: pageNumber })
+      table.setPageIndex(pageNumber)
     }
-  };
+  }
   return (
-    
-    <div   className={ className} >
+    <div className={className}>
       <div className="rounded-md border flex-1">
-        <Table className=' h-full  w-full'>
+        <Table className=" h-full table-fixed  w-full">
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) =>(
+            {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}  >
+                    <TableHead key={header.id} className={(header.column.columnDef as CustomColumnDef<T>).className}>
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   )
@@ -126,41 +114,48 @@ const XwyaTable = ({ data=[],columns=[],total=1,onChange,page,loading,className 
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody >
+          <TableBody>
             {table.getRowModel().rows.map((row) => (
-              <TableRow  key={row.id} data-state={row.getIsSelected() && 'selected'}>
+              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                 {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}   >{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                  ))}
+                  <TableCell key={cell.id} className={(cell.column.columnDef as CustomColumnDef<T>).className}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
             ))}
-         
-            { !loading&&!table.getRowModel().rows.length&&<TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                    暂无数据.
-              </TableCell>
-            </TableRow>}
-              
-            { loading&&<TableRow><TableCell className=' absolute inset-0 flex justify-center bg-[rgba(255,255,255,0.6)] dark:bg-[rgba(0,0,0,.3)] items-center  z-20'>正在加载...</TableCell></TableRow>}
 
+            {!loading && !table.getRowModel().rows.length && (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  暂无数据.
+                </TableCell>
+              </TableRow>
+            )}
+
+            {loading && (
+              <TableRow>
+                <TableCell className=" absolute inset-0 flex justify-center bg-[rgba(255,255,255,0.6)] dark:bg-[rgba(0,0,0,.3)] items-center  z-20">
+                  正在加载...
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>
       <div className=" shrink-0 flex items-center  justify-end space-x-2 py-4">
-      <div className="text-sm text-muted-foreground ">
-          共 {table.getPageCount()} 頁
-        </div>
-          <Button variant="outline"  size="sm" onClick={prev} disabled={!table.getCanPreviousPage()}>
-            上一頁
-          </Button>
-          <Button variant="outline"   size="sm" onClick={ next}  disabled={!table.getCanNextPage()} >
-            下一頁
-          </Button>
-        <div className=' text-sm items-center text-muted-foreground flex gap-2'>
+        <div className="text-sm text-muted-foreground ">共 {table.getPageCount()} 頁</div>
+        <Button variant="outline" size="sm" onClick={prev} disabled={!table.getCanPreviousPage()}>
+          上一頁
+        </Button>
+        <Button variant="outline" size="sm" onClick={next} disabled={!table.getCanNextPage()}>
+          下一頁
+        </Button>
+        <div className=" text-sm items-center text-muted-foreground flex gap-2">
           <span>跳至</span>
-          <Input className='w-10'  onKeyPress={handleKeyPress}  />
+          <Input className="w-10" onKeyPress={handleKeyPress} />
           <span>頁</span>
-        </div> 
+        </div>
       </div>
     </div>
   )

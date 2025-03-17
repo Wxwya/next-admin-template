@@ -1,9 +1,8 @@
 "use client"
-import React, { ReactNode } from 'react'
-import { Popover, PopoverContent, PopoverTrigger, } from '@/components/ui/popover'
-import { Button} from "@/components/ui/button"
+import React, { ReactNode,useState } from 'react'
+import { Button,Popover, PopoverContent, PopoverTrigger} from "@/rely/admin_ui"
 const XwyaPopover = ({ children, text, content = {},onConfirm }: { children: ReactNode; text: string, content: any,onConfirm:Function }) => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
   const confirm = () => { 
     onConfirm() && setOpen(false)
   }

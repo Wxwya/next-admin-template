@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
-import './globals.css'
+import '@/styles/globals.css'
 import  { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from "next-themes"
 
 const ddjbt = localFont({
-  src: './fonts/DingTalkJinBuTi.woff',
+  src: 'public/fonts/DingTalkJinBuTi.woff',
   variable: '--font-geist-sans',
   weight: '100 900',
 })

@@ -1,7 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import styles from './index.module.scss'
-import avatar from '@/app/assets/images/avatar.png'
+import avatar from '@/assets/images/avatar.png'
 import Image from 'next/image'
 import  NavList  from './navlist'
 export const metadata: Metadata = {

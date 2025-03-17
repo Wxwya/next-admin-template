@@ -1,6 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
-import toast from "react-hot-toast"
+import { toast,Image} from "@/rely/global"
 type ViewImageProps = {
   filelist: string[]
   index: number

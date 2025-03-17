@@ -76,15 +76,15 @@ export default {
 				dropAndZoom: {
 					'0%': {
             transform: 'translateY(-600px) scale(0.5)',
-            opacity: 0,
+            opacity: '0',
 					},
 					'50%': {
             transform: 'translateY(0px) scale(1.2)',
-            opacity: 0.7,
+            opacity: '0.7',
 					},
 					'100%': {
             transform: 'translateY(0) scale(1)',
-            opacity: 1,
+						opacity: '1',
 					}
 				}
 			}

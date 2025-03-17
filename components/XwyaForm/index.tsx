@@ -1,30 +1,33 @@
 'use client'
+import { ReactNode } from 'react'
 import { Form, FormField, FormItem, FormControl, FormLabel, FormMessage, FormDescription } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
 import UploadFile from '@/components/UploadFile'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
-import { cn } from '@/lib/utils'
-import { format } from 'date-fns'
-import { zhCN } from 'date-fns/locale'
+import {Input, Button,Select, SelectContent, SelectItem, SelectValue, SelectTrigger,RadioGroup, RadioGroupItem,Label,Checkbox,Textarea,Switch,Popover, PopoverContent, PopoverTrigger } from "@/rely/admin_ui"
+import { cn,format,zhCN } from "@/rely/global"
+
+type FormItemTypeProps =  "input" | "select" | "radio" | "checkbox" | "switch" | "textarea" | "upload" | "date" | "range";
+type FormContentProps = { placeholder?: string; startPlaceholder?: string; endPlaceholder?: string; options?: Option[]; multiple?: boolean; accept?: string,type?:string }
+type FormItemProps = {
+  label: string;
+  name: string;
+};
+export type FormItemsProps = {
+  type: FormItemTypeProps;
+  item: FormItemProps;
+  content?: FormContentProps;
+}
 type XwyaFormProps = {
   labelWidth?: number
   labelAlign?: 'left' | 'right'
   row?: number
-  items: any
-  onFinish: (values: any) => void
+  items: FormItemsProps[]
+  onFinish?: (values: any) => void
   form: any,
-  layout: "horizontal" | "vertical",
-  children:ReactNode
+  layout?: "horizontal" | "vertical",
+  children?:ReactNode
 }
-const getTypeFormItem = (data: any, field: any, labelWidth: number = 65, labelAlign: string = "right", layout: string,) => {
+const getTypeFormItem = (data: any, field: any, labelWidth: number = 65, labelAlign: "left"|"right" = "right", layout: string) => {
   
   switch (data.type) {
     case 'input':
@@ -85,7 +88,7 @@ const getTypeFormItem = (data: any, field: any, labelWidth: number = 65, labelAl
             <FormControl>
               <RadioGroup {...data.content} onValueChange={field.onChange} defaultValue={field.value}>
                 <div className=" flex gap-2 items-center flex-wrap">
-                  {data.content.options.map((item) => (
+                  {data.content.options.map((item:Option) => (
                     <div className="flex items-center space-x-2" key={item.value}>
                       <RadioGroupItem value={item.value} id={`${item.value}-radio`} />
                       <Label htmlFor={`${item.value}-radio`}>{item.label}</Label>
@@ -106,7 +109,7 @@ const getTypeFormItem = (data: any, field: any, labelWidth: number = 65, labelAl
             <FormLabel style={{ width: labelWidth, textAlign: labelAlign,flexShrink:0  }}>{data.item.label}</FormLabel>
             <FormControl>
               <div className=" flex gap-2 items-center flex-wrap">
-                {data.content.options.map((item) => (
+                {data.content.options.map((item:Option) => (
                   <div className="flex gap-2" key={item.value}>
                     <Checkbox
                       id={`${item.value}-checkbox`}
@@ -115,7 +118,7 @@ const getTypeFormItem = (data: any, field: any, labelWidth: number = 65, labelAl
                           ? field.value
                             ? field.onChange([...field.value, item.value])
                             : field.onChange([item.value])
-                          : field.onChange(field.value?.filter((value) => value !== item.value))
+                          : field.onChange(field.value?.filter((value:string|number) => value !== item.value))
                       }}
                       checked={field.value && field.value?.includes(item.value)}
                     />
@@ -238,7 +241,7 @@ const XwyaForm = ({ items = [], row = 1, layout = "horizontal", labelAlign, labe
     <Form {...form}>
       <form onSubmit={handleFormSubmit} autoComplete="off">
         <div className="flex  gap-4 flex-wrap items-center">
-          {items.map((item, index) => (
+          {items.map((item, index:number) => (
             <FormField
               key={index}
               control={form.control}

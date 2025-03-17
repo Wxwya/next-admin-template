@@ -1,16 +1,8 @@
 'use client'
-import React, { useEffect } from 'react'
-import Layout from '@/components/Layout'
-import XwyaForm from '@/components/XwyaForm'
-import XwyaTable from '@/components/XwyaTable'
-import XwyaPopover from '@/components/XwyaPopover'
-import usePage from '@/hooks/usePage'
-import { Button } from '@/components/ui/button'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import React from 'react'
 import Link from 'next/link'
-import { ColumnDef } from '@tanstack/react-table'
+import { Button,XwyaPopover  } from "@/rely/admin_ui"
+import {CustomColumnDef,useForm,zodResolver,z,usePage,PageType,XwyaTable, XwyaForm,FormItemsProps,Layout,useEffect} from "@/rely/admin_global"
 type Payment = {
   id: string
   amount: number
@@ -29,7 +21,7 @@ const schema = z.object({
     })
     .optional(),
 })
-const items = [
+const items:FormItemsProps[] = [
   { type: 'input', item: { label: '貨物名稱', name: 'name' }, content: { placeholder: '請輸入貨物名稱' } },
   { type: 'input', item: { label: '再交名稱', name: 'names' }, content: { placeholder: '請輸入再交名稱' } },
   {
@@ -81,7 +73,7 @@ const pageData = [
 
 const Order = () => {
   const { page, setData, data, setPage, loading, setLoading, total, setTotal } = usePage()
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: '',
@@ -89,15 +81,15 @@ const Order = () => {
       namesss: '',
       names: '',
       range: {
-        from: '',
-        to: '',
+        from: void 0,
+        to:void 0,
       },
     },
   })
   const onFinish = (values: any) => {
     console.log(values)
   }
-  const returnData = (pageIndex) => {
+  const returnData = (pageIndex:number):Promise<any[]> => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         const pageSize = 10 // 每页的条数
@@ -107,6 +99,7 @@ const Order = () => {
 
         if (pagesData.length > 0) {
           resolve(pagesData)
+          
         } else {
           reject({
             status: 'error',
@@ -123,7 +116,7 @@ const Order = () => {
     setTotal(Math.ceil(20 / page.pageSize))
     setLoading(false)
   }
-  const onChange = (page) => {
+  const onChange = (page:PageType) => {
     setPage(page)
     return true
   }
@@ -133,7 +126,7 @@ const Order = () => {
   const onFormReset = () => {
     form.reset()
   }
-  const columns: ColumnDef<Payment>[] = [
+  const columns: CustomColumnDef<Payment>[] = [
     {
       accessorKey: 'status',
       header: '序號',
@@ -143,8 +136,8 @@ const Order = () => {
     {
       accessorKey: 'email',
       header: '再交名稱',
-      className: 'w-[200px]',
-      cell: ({ row }) => <div className="lowercase">{row.getValue('email')}</div>,
+      className: 'w-[80px]',
+      cell: ({ row }) => <div className="lowercase  truncate">{row.getValue('email')}</div>,
     },
     {
       accessorKey: 'emails',

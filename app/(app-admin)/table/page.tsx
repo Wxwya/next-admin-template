@@ -1,21 +1,7 @@
 "use client"
-import React, { useEffect, useState } from 'react'
-import Layout from '@/components/Layout'
-import XwyaTable, { Payment } from '@/components/XwyaTable'
-import usePage from '@/hooks/usePage'
-import { Checkbox } from '@/components/ui/checkbox'
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+import React from 'react'
+import { ColumnDef, usePage, PageType, XwyaTable, Layout, useEffect } from "@/rely/admin_global"
+import { Button,XwyaPopover,DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger,ArrowUpDown,  MoreHorizontal,Checkbox  } from "@/rely/admin_ui"
 type Payment = {
   id: string
   amount: number
@@ -117,7 +103,7 @@ const pageData = [
 
 const Table = () => {
   const { page,setData,data,setPage,loading,setLoading,total,setTotal } = usePage()
-  const returnData = (pageIndex) => { 
+  const returnData = (pageIndex:number):Promise<any[]> => { 
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           const pageSize = 10; // 每页的条数
@@ -153,7 +139,7 @@ const Table = () => {
     // getData()
     setPage({...page,pageNo:1})
   }
-  const onChange = (page) => { 
+  const onChange = (page:PageType) => { 
     setPage(page)
     return true
   }

@@ -1,14 +1,7 @@
 'use client'
 import React from 'react'
-import BlurIn from '@/components/ui/blur-in'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import XwyaForm from '@/components/XwyaForm'
+import { Button,Label,Input,Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,BlurIn } from "@/rely/admin_ui"
+import {ColumnDef,useForm,zodResolver,z,usePage,PageType,XwyaTable, XwyaForm,FormItemsProps,Layout,useEffect} from "@/rely/admin_global"
 const formSchema = z.object({
   username: z.string().min(2, {
     message: 'Username must be at least 2 characters.',
@@ -17,7 +10,7 @@ const formSchema = z.object({
     message: '密碼不能小於6位',
   }),
 })
-const items = [
+const items:FormItemsProps[] = [
   { type: 'input', item: { label: '账号', name: 'username' }, content: { placeholder: '請輸入用戶名' } },
   { type: 'input', item: { label: '密码', name: 'password' }, content: { placeholder: '請輸入密碼', type: 'password' } },
 ]
@@ -41,7 +34,7 @@ const Login = () => {
       <div className=" absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2  ">
         <Card className="w-[350px] shadow-md animate-dropAndZoomOnce">
           <CardHeader>
-            <CardTitle className=" text-center" asChild>
+            <CardTitle className=" text-center">
               Xwya博客管理后台系统
             </CardTitle>
           </CardHeader>

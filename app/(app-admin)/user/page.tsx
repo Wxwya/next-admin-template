@@ -1,17 +1,9 @@
 'use client'
-import React, { useEffect } from 'react'
-import Layout from '@/components/Layout'
-import XwyaForm from '@/components/XwyaForm'
-import XwyaTable from '@/components/XwyaTable'
-import XwyaPopover from '@/components/XwyaPopover'
+import React from 'react'
 import XwyaUserDialog from '@/components/XwyaUserDialog'
-import usePage from '@/hooks/usePage'
-import { Button } from '@/components/ui/button'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
 import Link from 'next/link'
-import {ColumnDef} from '@tanstack/react-table'
+import { Button,XwyaPopover  } from "@/rely/admin_ui"
+import {ColumnDef,useForm,zodResolver,z,usePage,PageType,XwyaTable, XwyaForm,FormItemsProps,Layout,useEffect} from "@/rely/admin_global"
 type Payment = {
   id: string
   amount: number
@@ -22,7 +14,7 @@ const schema = z.object({
   name: z.string().optional(),
   namess: z.string().optional(),
 })
-const items = [
+const items:FormItemsProps[] = [
   { type: 'input', item: { label: '用戶名', name: 'name' }, content: { placeholder: '請輸入用戶名' } },
   {
     type: 'select', item: { label: '所屬系統', name: 'namess' }, content: {
@@ -56,7 +48,7 @@ const pageData = [
 
 const User = () => {
   const { page, setData, data, setPage, loading, setLoading, total, setTotal } = usePage()
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: '',
@@ -66,7 +58,7 @@ const User = () => {
   const onFinish = (values: any) => {
     console.log(values)
   }
-  const returnData = (pageIndex) => {
+  const returnData = (pageIndex:number):Promise<any[]> => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         const pageSize = 10 // 每页的条数
@@ -92,7 +84,7 @@ const User = () => {
     setTotal(Math.ceil(20 / page.pageSize))
     setLoading(false)
   }
-  const onChange = (page) => {
+  const onChange = (page:PageType) => {
     setPage(page)
     return true
   }

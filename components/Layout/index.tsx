@@ -4,7 +4,7 @@ import AppSidebar from '@/components/AppSidebar'
 import { menu } from './menu'
 import BlurFade from '@/components/ui/blur-fade'
 import AppMainHead from '@/components/AppMainHead'
-import useSystemStore, { onChangeMenuGroupKeys, onChangeCollapsed } from '@/store/system'
+import { useSystemStore,onChangeMenuGroupKeys, onChangeCollapsed} from "@/rely/global"
 import { SidebarInset } from '@/components/ui/sidebar'
 type LayoutProps = {
   children: React.ReactNode

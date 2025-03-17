@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useTheme } from 'next-themes'
-import { Portal } from '@radix-ui/react-dialog'
 const options: Option[] = [
   { label: '极简', value: 'light' },
   { label: '极简黑', value: 'dark' },
@@ -13,8 +12,8 @@ const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 const AppSidebarFoot = () => {
   const { theme, setTheme } = useTheme()
   const [icon, setIcon] = useState('solar--sun-bold')
-  const onChange = (value: string) => {
-    getSystemTheme(value)
+  const onChange = (value:any) => {
+    getSystemTheme()
     setTheme(value)
   }
   const getSystemTheme = () => {
@@ -47,7 +46,7 @@ const AppSidebarFoot = () => {
         </SidebarMenuButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" align="end" sideOffset={10}>
-        {options.map((item) => (
+        {options.map((item:Option) => (
           <DropdownMenuItem onClick={() => onChange(item.value)} key={item.value}>
             {item.label}
           </DropdownMenuItem>

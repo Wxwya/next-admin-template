@@ -6,15 +6,19 @@ import { useState } from "react";
  * 
  * @returns {page: {pageSize, pageNum}, total: number,loading: boolean,data:[]any}
  */
+export type PageType = {
+    pageSize: number,
+    pageNo: number
+}
 const usePage = (pageSize: number=10) => { 
 
-  const [page,setPage] = useState({
+  const [page,setPage] = useState<PageType>({
     pageSize,
     pageNo: 1,
   })
-  const [data,setData] = useState([])
-  const [total,setTotal]:number = useState(0)
-  const [loading,setLoading] = useState(false)
+  const [data,setData]= useState<any[]>([])
+  const [total,setTotal]= useState<number>(0)
+  const [loading,setLoading] = useState<boolean>(false)
   return {
     page,
     total,

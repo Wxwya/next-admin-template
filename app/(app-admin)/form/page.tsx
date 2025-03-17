@@ -1,12 +1,6 @@
 'use client'
-import React, { useState} from 'react'
-import Layout from '@/components/Layout'
-import  XwyaForm  from '@/components/XwyaForm'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { Calendar } from "@/components/ui/calendar"
-
+import React from 'react'
+import {useForm,zodResolver,z,XwyaForm,FormItemsProps,Layout} from "@/rely/admin_global"
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -40,7 +34,7 @@ const formSchema = z.object({
   }).default({to:new Date(),from:new Date()})
   // UploadFile: z.array(z.string()).default([]),
 })
-const items = [
+const items:FormItemsProps[] = [
   { type: "input", item: { label: "用戶名", name: "username" }, content: { placeholder: "請輸入用戶名" } },
   { type: "select", item: { label: "性別", name: "sex" }, content: { placeholder: "請選擇性別", options: [{ label: "男", value: "1" }, { label: "女", value: "2" }] } },
   { type: "radio", item: { label: "單選", name: "Radio" }, content: { options: [{ label: "男", value: "1" }, { label: "女", value: "2" }] } },
@@ -84,7 +78,6 @@ const FormPage = () => {
     <Layout page='表单' pathKey='/form'>
       <div className=' p-4'>
         <XwyaForm items={items} form={form} onFinish={onFinish} />
-
       </div>
 
     </Layout>

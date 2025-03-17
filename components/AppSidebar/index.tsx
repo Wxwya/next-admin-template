@@ -22,7 +22,7 @@ const AppSidebar = ({ items, onChange = () => { }, selectedKey, iconActiveColor,
     menuGroupKeys
   }
   return (
-    <Sidebar collapsible="icon" positionFixed={false} variant="sidebar">
+    <Sidebar collapsible="icon"  variant="sidebar">
       {sidebarHead?<SidebarHeader  ><AppSidebarHead /></SidebarHeader>:null} 
       <SidebarContent>
         <SidebarGroup>

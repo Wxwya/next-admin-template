@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/', // 原始 URL
-        destination: '/goodsType', // 目标 URL
+        destination: '/home', // 目标 URL
         permanent: true, // 永久重定向
       },
     ]

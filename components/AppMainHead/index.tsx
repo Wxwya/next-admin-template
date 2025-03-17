@@ -27,7 +27,6 @@ const AppMainHead = ({ link, href, page }: AppMainHeadProps) => {
                 <BreadcrumbSeparator />
               </>
             ) : null}
-
             <BreadcrumbPage>{page}</BreadcrumbPage>
           </BreadcrumbList>
         </Breadcrumb>

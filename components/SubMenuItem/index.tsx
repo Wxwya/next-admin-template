@@ -25,7 +25,8 @@ const SubMenuItem = ({path,title,icon,routes,iconColor,selectedKey,onChange = ()
         <CollapsibleTrigger  className="w-full flex  justify-between items-center">
           <div className={`flex  items-center  gap-2 ${open?'gap-2':'gap-4'} `}>
             <div className=" flex  items-center justify-center">
-            <span className={`iconify text-xl ml-0.5 ${icon}`}  style={{ color: iconColor }}  />
+            {/* style={{ color: iconColor }} */}
+            <span className={`iconify text-xl ml-0.5 ${icon}`}    />
             </div>
             <span>{title}</span>
           </div>

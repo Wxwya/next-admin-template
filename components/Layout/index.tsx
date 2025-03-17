@@ -48,7 +48,6 @@ const Layout = ({ children, pathKey, groupKey, link, page, href }: LayoutProps) 
     groupKey && onChangeMenuGroupKeys(groupKey, true)
   }, [])
   return (
-    // <ThemeProviderNoSSR attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
     <SidebarProvider open={collapsed} onOpenChange={onChangeCollapsed}>
       <AppSidebar {...config} />
       <SidebarInset className=' overflow-x-hidden h-screen'>
@@ -58,7 +57,6 @@ const Layout = ({ children, pathKey, groupKey, link, page, href }: LayoutProps) 
         </BlurFade>
       </SidebarInset>
     </SidebarProvider>
-    // </ThemeProviderNoSSR>
   )
 }
 

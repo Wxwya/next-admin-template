@@ -20,7 +20,8 @@ const MenuItem = ({ path, title, icon, iconColor, iconActiveColor, onChange, sel
         <SidebarMenuButton className=" text-base !py-6   group-data-[collapsible=icon]:!size-10" tooltip={title} asChild   isActive={path === selectedKey} >
           <div onClick={toPage} className="flex cursor-pointer   w-full items-center">
             <div className=" flex items-center justify-center ">
-            <div className={`iconify text-xl   ${icon} ml-0.5   ` } style={{color: path===selectedKey?iconActiveColor:iconColor}}></div>
+            {/* style={{color: path===selectedKey?iconActiveColor:iconColor}} */}
+            <div className={`iconify text-xl   ${icon} ml-0.5   ` } ></div>
             </div>
             <span>{title}</span>
           </div>
